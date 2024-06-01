@@ -62,6 +62,7 @@ norm = {
         'bgt':'banget',
         'bangettt':'banget',
         'bangett':'banget',
+        'skrg' :'sekarang',
         }
 
 def normalisasi(text):
