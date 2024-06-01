@@ -5,7 +5,7 @@ from nltk.corpus import stopwords
 nltk.download('stopwords')
 nltk.download('punkt')
 
-
+#Cleaning
 def clean_text(tweet):
     # Menghapus URL
     url = re.compile(r'https?://\s+|www\.\s+')
@@ -32,26 +32,62 @@ def clean_text(tweet):
 
     return tweet
 
+#Normalisasi
+norm = {
+        'gmn': 'bagaimana',
+        'km': 'kamu',
+        'skrg': 'sekarang',
+        'sblmnya': 'sebelumnya',
+        'bls': 'membalas',
+        'trs': 'terus',
+        'tp': 'tapi',
+        'krn': 'karena',
+        'gak': 'tidak',
+        'yg': 'yang',
+        'sm': 'sama',
+        'utk': 'untuk',
+        'aja': 'saja',
+        'nggak': 'tidak',
+        'dmn': 'di mana',
+        'dr': 'dari',
+        'mantaap':'mantap',
+        'mantaaap':'mantap',
+        'mantappp':'mantap',
+        'bgs ': 'bagus',
+        'bgus': 'bagus',
+        'jd': 'jadi',
+        'yg': 'yang',
+        'jelekkk':'jelek',
+        'jelekk':'jelek',
+        'bgt':'banget',
+        'bangettt':'banget',
+        'bangett':'banget',
+        }
 
+def normalisasi(text):
+  for i in norm:
+    text = text.replace(i, norm[i])
+  return text
+
+#Case Folding
 def case_folding(text):
     return text.lower()
 
-
+#Tokenization
 def tokenize(text):
     tokens = text.split()
     return tokens
 
-
+#Stopword Removal
+#Memakai Library NLTK
 stop_words = stopwords.words('indonesian')
-
-
 def remove_stopwords(text):
     return [word for word in text if word not in stop_words]
 
-
+#Stemming
+#Memakai library Sastrawi
 factory = StemmerFactory()
 stemmer = factory.create_stemmer()
-
 
 def stem_text(text):
     return [stemmer.stem(word) for word in text]

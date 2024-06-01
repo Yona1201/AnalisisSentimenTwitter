@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import joblib
-from preprocessing import clean_text, case_folding, tokenize, remove_stopwords, stem_text
+from preprocessing import clean_text, case_folding, tokenize, remove_stopwords, stem_text, normalisasi
 
 
 model = joblib.load('svm.pkl')
@@ -18,15 +18,17 @@ if option == 'Text':
     if st.button('Analyze'):
         # Preprocessing teks
         cleaned_text = clean_text(user_input)
-        folded_text = case_folding(cleaned_text)
+        normalised_text = normalisasi(cleaned_text)
+        folded_text = case_folding(normalised_text)
         tokenized_text = tokenize(folded_text)
         wstopword_text = remove_stopwords(tokenized_text)
         stemmed_text = ' '.join(stem_text(wstopword_text))
 
+
         # Tampilkan tahapan preprocessing
         st.subheader('Preprocessing Steps:')
-        st.write(pd.DataFrame({'Step': ['Cleaning', 'Case Folding', 'Tokenization', 'Stopword Removal', 'Stemming'],
-                               'Result': [cleaned_text, folded_text, tokenized_text,  wstopword_text,
+        st.write(pd.DataFrame({'Step': ['Cleaning','Normalisasi' ,'Case Folding', 'Tokenization', 'Stopword Removal', 'Stemming'],
+                               'Result': [cleaned_text, normalised_text, folded_text, tokenized_text,  wstopword_text,
                                           stemmed_text]}))
 
         # Proses teks dan lakukan prediksi
@@ -44,6 +46,7 @@ elif option == 'File':
         # Preprocessing teks dalam kolom 'Text'
         df['text'] = df['text'].astype(str)
         df['Cleaned'] = df['text'].apply(clean_text)
+        df['Normalized'] = df['Cleaned'].apply(normalisasi)
         df['Case Folded'] = df['Cleaned'].apply(case_folding)
         df['Tokenized'] = df['Case Folded'].apply(tokenize)
         df['Stopword Removal'] = df['Tokenized'].apply(remove_stopwords)
